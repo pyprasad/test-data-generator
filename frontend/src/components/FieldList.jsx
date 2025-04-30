@@ -68,13 +68,16 @@ export default function FieldList({ fields, setFields, setGeneratedData }) {
         <button
           onClick={generateData}
           disabled={!isValid() || loading}
-          className={`px-6 py-2 rounded text-white transition ${
+          className={`px-6 py-2 rounded text-white flex items-center justify-center gap-2 transition min-w-[220px] ${
             loading
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-pink-500 hover:bg-pink-600"
           }`}
         >
-          {loading ? "Generating..." : "🚀 Generate Test Data"}
+          {loading && (
+            <span className="spinner" aria-label="Loading"></span>
+          )}
+          <span>{loading ? "Generating..." : "🚀 Generate Test Data"}</span>
         </button>
       </div>
     </div>
