@@ -2,8 +2,11 @@ const { generateDataFromFields } = require('../services/openaiService');
 
 const generateTestData = async (req, res) => {
   try {
-    const { fields, types, strategy } = req.body;
-    const data = await generateDataFromFields(fields, types, strategy);
+    const { fields, types, constraints, strategy } = req.body;
+    const data = await generateDataFromFields(fields, types, constraints, strategy);
+    if (!data || data.length === 0) {
+      return res.status(500).json({ error: 'No data generated' });
+    }
     res.json({ data });
   } catch (error) {
     console.error('Error in generateTestData:', error);

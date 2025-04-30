@@ -4,7 +4,7 @@ export function downloadCSV(data, filename = "test_data.csv") {
   const headers = Object.keys(data[0]);
   const csvRows = [
     headers.join(","), // Header row
-    ...data.map(row => headers.map(field => JSON.stringify(row[field], replacer)).join(","))
+    ...data.map(row => headers.map(field => sanitizeCSVValue(row[field])).join(","))
   ];
 
   const csvContent = csvRows.join("\n");
@@ -19,6 +19,8 @@ export function downloadCSV(data, filename = "test_data.csv") {
   window.URL.revokeObjectURL(url);
 }
 
-function replacer(key, value) {
-  return value === null ? "" : value;
+function sanitizeCSVValue(value) {
+  if (value === null || value === undefined) return "";
+  // Remove double quotes and line breaks, escape commas if needed
+  return String(value).replace(/"/g, '').replace(/[\r\n]+/g, ' ');
 }
